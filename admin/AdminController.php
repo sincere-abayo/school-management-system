@@ -34,17 +34,16 @@ else {
    
 }
 // SQL query to count projects
-$projectnq = "SELECT COUNT(*)AS project_count FROM project";
+$projectnq = "SELECT COUNT(*)AS project_count FROM projects";
 
-$sqlProject = "SELECT * FROM projects join schools on (projects.school_id=projects.school_id)";
+$sqlProject = "SELECT * FROM projects join schools on (projects.school_id=schools.school_id)";
 
 $resultProject = $conn->query($sqlProject);
 $resultProjectnq = $conn->query($projectnq);
-$row = $resultProject->fetch_assoc();
+$row = $resultProjectnq->fetch_assoc();
 $projectCount = $row['project_count'];
 
 if ($resultProject->num_rows> 0) {
-
 
     // $projectCount = $resultProject->num_rows;
     $projectData=mysqli_fetch_array($conn->query($sqlProject));
@@ -52,8 +51,8 @@ if ($resultProject->num_rows> 0) {
     $project_owner = $projectData['Project_owner'];
     $project_file=$projectData['Project_file'];
     $project_school_name = $projectData['School_name'];
-//   echo "$project_name";
-echo $projectCount;
+  echo "$project_name";
+// echo $projectCount;
     
 } 
 else {

@@ -4,7 +4,7 @@
 include '../SessionController.php';
 include '../config.php';
 
-if ($_POST['register']) {
+if ($_SERVER['REQUEST_METHOD']=='POST') {
    
     $school_name=$_POST['school-name'];
 $district=$_POST['district'];

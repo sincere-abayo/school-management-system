@@ -33,6 +33,8 @@ if ($result->num_rows > 0) {
     // Successful login
     $_SESSION['username'] = $username;
     $_SESSION['role'] = $role;
+    $_SESSION['password'] = $password;
+    
     echo "Login successful! Welcome " . htmlspecialchars($username);
 } else {
     // Failed login

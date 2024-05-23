@@ -1,0 +1,53 @@
+// Print the table
+document.getElementById('printTable').addEventListener('click', function() {
+    const printContent = document.getElementById('dataTable');
+    const newWin = window.open("");
+    newWin.document.write('<h1>Data Table</h1>'); // Add the table title for print
+    newWin.document.write(printContent.outerHTML);
+    newWin.print();
+    newWin.close();
+});
+
+// Download CSV
+document.getElementById('downloadCSV').addEventListener('click', function() {
+    let csv = [];
+    const title = 'Data Table';
+    csv.push(title); // Add the table title as the first row
+    const rows = document.querySelectorAll("table tr");
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("th, td");
+        let rowData = [];
+        cells.forEach(cell => {
+            rowData.push(cell.innerText);
+        });
+        csv.push(rowData.join(","));
+    });
+    const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "table.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+
+// Export to Excel
+document.getElementById('exportExcel').addEventListener('click', function() {
+    const table = document.getElementById('dataTable');
+    const tableTitle = 'Data Table';
+    const wb = XLSX.utils.book_new();
+    
+    // Convert table to worksheet
+    const ws = XLSX.utils.table_to_sheet(table);
+    
+    // Create a new worksheet with title row
+    const wsData = [[tableTitle], ...XLSX.utils.sheet_to_json(ws, { header: 1 })];
+    const newWs = XLSX.utils.aoa_to_sheet(wsData);
+    
+    // Append worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, newWs, 'Sheet1');
+    
+    // Export workbook
+    XLSX.writeFile(wb, 'table.xlsx');
+});
